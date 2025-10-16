@@ -1,35 +1,21 @@
-def second_largest(numbers):
-    """
-    Returns the second-largest number in a list.
-    Approach: Remove duplicates, sort in descending order, return second element.
-    """
-    if len(numbers) < 2:
-        return None  # Not enough numbers
-    
-    unique_numbers = list(set(numbers))  # Remove duplicates
-    unique_numbers.sort(reverse=True)     # Sort descending
-    
-    if len(unique_numbers) < 2:
-        return None  # All numbers are the same
-    
-    return unique_numbers[1]
+# Question 1: Second Largest Number
 
+## Approach
 
-# Test cases
-test_lists = [
-    [10, 20, 4, 45, 99],
-    [1, 1, 1, 1],
-    [5, 3, 8, 3, 8, 10],
-    [7],
-    [15, 15, 20, 20, 25]
-]
+My function finds the second-largest number using these steps:
 
-print("=" * 50)
-print("Second Largest Number - Test Results")
-print("=" * 50)
+1. **Remove duplicates** using `set()` to avoid counting the same number twice
+2. **Sort in descending order** to get largest numbers first
+3. **Return the second element** (index 1)
+4. **Handle edge cases**: 
+   - Lists with fewer than 2 elements
+   - Lists where all numbers are identical
 
-for i, test_list in enumerate(test_lists, 1):
-    result = second_largest(test_list)
-    print(f"Test {i}: {test_list}")
-    print(f"Second Largest: {result}")
-    print("-" * 50)
+## Time Complexity
+- **O(n log n)** due to sorting
+
+## Alternative Approach
+For better performance O(n), I could iterate once and track the largest and second-largest values without sorting.
+
+## Code
+See `Q1_SecondLargest.py`
