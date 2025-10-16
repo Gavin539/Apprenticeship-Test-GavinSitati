@@ -1,1 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .profile-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .profile-item {
+            margin-bottom: 15px;
+        }
+        
+        .profile-item label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .profile-item p {
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .loading, .error {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👤 User Profile</h1>
+        <div id="content"></div>
+    </div>
 
+    <script>
+        const API_URL = 'https://jsonplaceholder.typicode.com/users/1';
+        const contentDiv = document.getElementById('content');
+
+        // Show loading state
+        function showLoading() {
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading user data...</p>
+                </div>
+            `;
+        }
+
+        // Show error state
+        function showError(message) {
+            contentDiv.innerHTML = `
+                <div class="error">
+                    <h3>⚠️ Error</h3>
+                    <p>${message}</p>
+                    <button onclick="fetchUserData()">Try Again</button>
+                </div>
+            `;
+        }
+
+        // Show user data
+        function showUser(user) {
+            contentDiv.innerHTML = `
+                <div class="profile-card">
+                    <div class="profile-item">
+                        <label>Name:</label>
+                        <p>${user.name}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Email:</label>
+                        <p>${user.email}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Username:</label>
+                        <p>${user.username}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Phone:</label>
+                        <p>${user.phone}</p>
+                    </div>
+                    <div class="profile-item">
+                        <label>Website:</label>
+                        <p>${user.website}</p>
+                    </div>
+                </div>
+                <button onclick="fetchUserData()">Refresh Data</button>
+            `;
+        }
+
+        // Fetch user data from API
+        async function fetchUserData() {
+            showLoading();
+            
+            try {
+                const response = await fetch(API_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const user = await response.json();
+                showUser(user);
+                
+            } catch (error) {
+                showError(`Failed to load user data: ${error.message}`);
+            }
+        }
+
+        // Load data on page load
+        fetchUserData();
+    </script>
+</body>
+</html>
